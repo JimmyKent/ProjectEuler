@@ -3,6 +3,8 @@ package com.jimmy.project.euler;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by jinguochong on 2017/8/11.
  */
@@ -18,7 +20,7 @@ public class StringMatchTest {
                 {"000100001", "00001", "4"},//1
         };
 
-        /*for (String[] s : test) {
+        for (String[] s : test) {
             char[] t = s[0].toCharArray();
             char[] p = s[1].toCharArray();
             int position = Integer.parseInt(s[2]);
@@ -34,7 +36,7 @@ public class StringMatchTest {
             int kmp2 = kmp2(t, p);
             System.out.println("kmp2 : " + kmp2);
             assertEquals(kmp2, position);
-        }*/
+        }
 
         int[]  nextTest = next("12123".toCharArray());
         int[]  nextTest2 = next2("12123".toCharArray());
