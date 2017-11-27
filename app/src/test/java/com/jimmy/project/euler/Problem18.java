@@ -20,8 +20,8 @@ import static org.junit.Assert.assertEquals;
  * 思路：如果使用Brute Force算法，需要把每条路径遍历一遍
  * 如果使用dp思路，如下图：
  * <p>
- * 1
- * 2   3
+ *     1
+ *   2   3
  * 4   5   6
  * <p>
  * 最后是要从2或者3出发，选取2+4，2+5，3+5，3+6中最大的
@@ -37,6 +37,7 @@ import static org.junit.Assert.assertEquals;
  * DP : 第n层，需要计算2(n-1)加法，(n-1)次比较，总：3(n-1)+3(n-2)+...+3*1 n是树宽，正好等于树高
  * DP把BF算法中的pow降低到n平方
  * {@link Problem67}
+ * Problem 81 和这个是一模一样的
  */
 
 public class Problem18 {
