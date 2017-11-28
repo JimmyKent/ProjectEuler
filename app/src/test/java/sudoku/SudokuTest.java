@@ -12,7 +12,7 @@ import java.util.Set;
  * Created by jinguochong on 2017/9/21.
  * 数独
  */
-
+@Deprecated
 public class SudokuTest {
 
     private static int[][] sudoku = new int[9][9];

@@ -3,12 +3,15 @@ package queen8;
 import org.junit.Test;
 
 /**
- * Created by jinguochong on 17-11-20.
+ * Created by jinguochong on 17-11-23.
+ * 深度优先算法
  */
 
-public class EightQueenTest {
+public class EightQueenTest3 {
 
-    private int[] existPos = new int[8];//
+    private static final int N = 8;
+
+    private int[] existPos = new int[N];//
     private static int count;
 
     @Test
@@ -19,64 +22,29 @@ public class EightQueenTest {
         cal(0);
     }
 
-
-    /*@Test
-    public void testPosValid() {
-        boolean valid = posValid(63, 0);
-        Assert.assertEquals(valid, false);
-
-    }*/
-
-
     /**
      * 每层递归设一个指针，从左往右，如果找到合法的就赋值，往下进行
-     * 产生回溯的时候，重置当前指针位置
+     * 不会产生回溯过程
      */
     private void cal(int pos) {
-        int x = pos % 8;
-        final int Y = pos / 8;
-
-        if (x == -1) {
-            return;
-        }
-        if (Y == 8) {
+        int x = pos % N;
+        final int Y = pos / N;
+        if (Y == N) {
             print(existPos);
-
-            int last = existPos[Y - 1];
-            existPos[Y - 1] = -1;
-            if (last % 8 == 7) {
-                last = existPos[Y - 2];
-                existPos[Y - 2] = -1;
-            }
-            cal(++last);
             return;
         }
-
-        while (x < 8) {
+        while (x < N) {
             if (isValid(pos)) {
                 existPos[Y] = pos;
-
-                int next = 8 * (Y + 1);
-                cal(next);//前进
-                return;
-            } else {
-                x++;
-                pos = x + Y * 8;
+                int next = N * (Y + 1);
+                cal(next);//向下
+                //深度优先的精髓,需要清空当前行的赋值
+                existPos[Y] = -1;
             }
+            //向右
+            x++;
+            pos = x + Y * N;
         }
-        //回溯
-        //if (x == 8) {
-        int last = existPos[Y - 1];
-        existPos[Y - 1] = -1;
-        if (last % 8 == 7) { // 因为不存在两行都是7的位置,所以这里不会重复出现
-            if (Y - 2 == -1) {
-                return;
-            }
-            last = existPos[Y - 2];
-            existPos[Y - 2] = -1;
-        }
-        cal(++last);
-        //}
     }
 
     private boolean isValid(int pos) {
@@ -96,11 +64,11 @@ public class EightQueenTest {
     }
 
     private boolean posValid(int pos, int queen) {
-        int x = queen % 8;
-        int y = queen / 8;
+        int x = queen % N;
+        int y = queen / N;
 
-        int posX = pos % 8;
-        int posY = pos / 8;
+        int posX = pos % N;
+        int posY = pos / N;
         if (posX == x) {
             return false;
         }
@@ -108,12 +76,12 @@ public class EightQueenTest {
             return false;
         }
 
-        int leftDiagonal = x - (posY - y) + 8 * posY;
+        int leftDiagonal = x - (posY - y) + N * posY;
         if (leftDiagonal == pos) {
             return false;
         }
 
-        int rightDiagonal = x + (posY - y) + 8 * posY;
+        int rightDiagonal = x + (posY - y) + N * posY;
         if (rightDiagonal == pos) {
             return false;
         }

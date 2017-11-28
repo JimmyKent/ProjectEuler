@@ -28,31 +28,22 @@ public class EightQueenTest2 {
     private void cal(int pos) {
         int x = pos % 8;
         final int Y = pos / 8;
-
-        if (x == -1) {
-            return;
-        }
         if (Y == 8) {
             print(existPos);
             return;
         }
-
         while (x < 8) {
             if (isValid(pos)) {
                 existPos[Y] = pos;
                 int next = 8 * (Y + 1);
-                cal(next);
+                cal(next);//向下
                 //深度优先的精髓,需要清空当前行的赋值
                 existPos[Y] = -1;
-                x++;
-                pos = x + Y * 8;
-
-            } else {
-                x++;
-                pos = x + Y * 8;
             }
+            //向右
+            x++;
+            pos = x + Y * 8;
         }
-
     }
 
     private boolean isValid(int pos) {

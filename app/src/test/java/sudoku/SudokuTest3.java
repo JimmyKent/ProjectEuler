@@ -1,7 +1,5 @@
 package sudoku;
 
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -11,9 +9,22 @@ import java.util.Set;
 /**
  * Created by jinguochong on 2017/9/21.
  * 数独
+ * ┌───────┬───────┬───────┐
+ * │ 3 6 2 │ 5 8 1 │ 4 7 9 │
+ * │ 9 1 4 │ 2 3 7 │ 8 5 6 │
+ * │ 7 8 5 │ 6 9 4 │ 2 3 1 │
+ * ├───────┼───────┼───────┤
+ * │ 1 7 9 │ 4 6 2 │ 5 8 3 │
+ * │ 8 2 3 │ 7 5 9 │ 6 1 4 │
+ * │ 5 4 6 │ 8 1 3 │ 9 2 7 │
+ * ├───────┼───────┼───────┤
+ * │ 4 3 1 │ 9 2 5 │ 7 6 8 │
+ * │ 6 5 7 │ 1 4 8 │ 3 9 2 │
+ * │ 2 9 8 │ 3 7 6 │ 1 4 5 │
+ * └───────┴───────┴───────┘
  */
-@Deprecated
-public class SudokuTest2 {
+
+public class SudokuTest3 {
 
     private static String test =
             "" +
@@ -26,10 +37,11 @@ public class SudokuTest2 {
                     "001900000" +
                     "007048300" +
                     "000000045";
+    private static final int NUM_MAX = 9;
 
     private static List<Integer> TOTAL = new ArrayList<>();
-    private static final int NUM_MAX = 9;
-    private static final int POS_MAX = 80;
+
+    private static List<Integer> empty = new ArrayList<>();
 
 
     //@Test
@@ -42,11 +54,12 @@ public class SudokuTest2 {
 
         print(arr);
 
-        //cal(arr);
 
-        //backTrack(arr);
+        //检查不出无解的情况!
+        backTrack(arr, 0, false);
 
-        backTrack(arr, 0, 0, false);
+
+        print(arr);
 
     }
 
@@ -66,21 +79,29 @@ public class SudokuTest2 {
 
         for (char c : chars) {
             if (j < 9) {
-                value = c - 48;
+                value = c - '0';
                 arr[i][j] = value;
-                j++;
             } else {
                 j = 0;
                 i++;
-                value = c - 48;
+                value = c - '0';
                 arr[i][j] = value;
             }
+            j++;
             if (value == 0) {
                 zeroSum++;
             }
         }
 
-        System.out.println("Zero sum : " + zeroSum);
+        for (int a = 0; a < 9; a++) {
+            for (int b = 0; b < 9; b++) {
+                if (arr[a][b] == 0) {
+                    empty.add(a * 9 + b);
+                }
+            }
+        }
+
+        System.out.println("Zero sum : " + zeroSum + "  " + Collections.singletonList(empty));
 
         return arr;
     }
@@ -103,83 +124,118 @@ public class SudokuTest2 {
      * guess从小到大进行
      * 思路:从0-80 顺序guess, 不需要维护guess表, 产生guess之后, 立即计算下一个位置的可能.
      * 如果产生回溯, 只需把当前guess的值++,
+     * <p>
+     * 这里是a解法
      *
+     *
+     * 对于任意空位:
+     * 1.关注上一步是前进还是回溯
+     * 2.关注当前步是前进还是回溯
      * @param input 原始数独
      */
-    private static void backTrack(int[][] input, int position, int currentGuess, boolean isRecursion) {
-
-        if (position > 80) {
+    private static void backTrack(int[][] input, int position, boolean isBacktrack) {
+        if (position > 81) {
             return;
         }
-
-        int x = position % 9;//行
-        int y = position / 9;//列
-
-
+        System.out.println("backTrack : " + position + " " + isBacktrack);
         // recursion
-        if (isRecursion) {
-            int guessNext = guessNext(input, position, currentGuess);
-
-            System.out.println("recursion : " + position + "  " + currentGuess +  "  " + guessNext);
-
-            if (guessNext == 0) { //回溯
-                input[y][x] = 0;
+        if (isBacktrack) {
+            while (!empty.contains(position)) {
                 --position;
-                int prevGuess = input[position / 9][position % 9];
-                backTrack(input, position, prevGuess, true);
-            } else {
-                input[y][x] = guessNext;
-                position++;
-                backTrack(input, position, 0, false);
+                if (position < 0) {
+                    return;
+                }
             }
-            return;
-        }
-
-        // forward
-        int value = input[y][x];
-
-        if (value == 0) {
-            int guessNext = guessNext(input, position, currentGuess);
-
-            System.out.println("forward : " + position + "   " + currentGuess + "  " + guessNext);
+            int guessNext = guessNext(input, position);
 
             if (guessNext == 0) { //回溯
-               // input[y][x] = 0;
+                input[position / 9][position % 9] = 0;
                 --position;
-                int prevGuess = input[position / 9][position % 9];
-                backTrack(input, position, prevGuess, true);
-            } else {
-                input[y][x] = guessNext;
-                position++;
-                backTrack(input, position, 0, false);
+                while (!empty.contains(position)) {
+                    --position;
+                    if (position < 0) {
+                        return;
+                    }
+                }
+                isBacktrack = true;
+            } else { //前进
+
+                input[position / 9][position % 9] = guessNext;
+
+                ++position;
+                while (!empty.contains(position)) {
+                    ++position;
+                    if (position > 80) {
+                        return;
+                    }
+                }
+                isBacktrack = false;
             }
         } else {
-            position++;
-
-            backTrack(input, position, 0, false);//prevGuess
+            while (!empty.contains(position)) {
+                ++position;
+                if (position > 80) {
+                    return;
+                }
+            }
+            // forward
+            int guessNext = guessNext(input, position);
+            int value = input[position / 9][position % 9];
+            if (value == 0) {
+                if (guessNext == 0) { //产生回溯
+                    --position;
+                    //getNextPosition
+                    while (!empty.contains(position)) {
+                        --position;
+                        if (position < 0) {
+                            return;
+                        }
+                    }
+                    isBacktrack = true;
+                } else {
+                    input[position / 9][position % 9] = guessNext;
+                    ++position;
+                    //getNextPosition
+                    while (!empty.contains(position)) {
+                        ++position;
+                        if (position > 80) {
+                            return;
+                        }
+                    }
+                    isBacktrack = false;
+                }
+            } else {
+                //跳过非空的位置, 最开始题目就给出的位置
+                ++position;
+                //getNextPosition
+                while (!empty.contains(position)) {
+                    ++position;
+                    if (position > 80) {
+                        return;
+                    }
+                }
+                isBacktrack = false;
+            }
         }
+        backTrack(input, position, isBacktrack);
     }
 
     /**
      * @return 返回下一个猜测的点
      */
-    private static int guessNext(int[][] input, int position, int current) {
+    private static int guessNext(int[][] input, int position) {
         int next = 0;
-
-        /*if (current == NUM_MAX) {
-            return next;
-        }*/
 
         Set<Integer> impossible = new HashSet<>();
 
         int x = position % 9;//行
         int y = position / 9;//列
 
-        /*int value = input[y][x];
+        int value = input[y][x];
 
-        if (value != 0) {
+        if (value == NUM_MAX) {
             return next;
-        }*/
+        }
 
         for (int i = 0; i < 9; i++) {
             //找出行已经有的数
@@ -199,8 +255,8 @@ public class SudokuTest2 {
         int blockY = y / 3 * 3;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (input[blockX + i][blockY + j] != 0) {
-                    impossible.add(input[blockX + i][blockY + j]);
+                if (input[blockY + i][blockX + j] != 0) {
+                    impossible.add(input[blockY + i][blockX + j]);
                 }
             }
         }
@@ -215,7 +271,7 @@ public class SudokuTest2 {
 
         Collections.sort(possible);
         for (int i : possible) {
-            if (i > current) {
+            if (i > value) {
                 return i;
             }
         }
@@ -239,41 +295,5 @@ public class SudokuTest2 {
         }
         System.out.println("└───────┴───────┴───────┘");
     }
-
-
-    @Test
-    public void testGuessNext() {
-
-        int next = 0;
-
-        Set<Integer> impossible = new HashSet<>();
-        impossible.add(1);
-        impossible.add(2);
-        impossible.add(3);
-        impossible.add(4);
-        impossible.add(5);
-        impossible.add(6);
-        impossible.add(7);
-        impossible.add(8);
-        impossible.add(9);
-
-        int current = 4;
-
-        List<Integer> temp = new ArrayList<>();
-        temp.addAll(TOTAL);
-
-        temp.removeAll(impossible);
-        Collections.sort(temp);
-
-        for (int i : temp) {
-            if (i > current) {
-                next = i;
-                break;
-            }
-        }
-
-        System.out.println(next);
-    }
-
 
 }

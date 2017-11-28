@@ -5,13 +5,14 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
 
 /**
  * Created by jinguochong on 24/11/2017.
+ * Dynamic Programming
+ * 动态方程的体现。
+ * arrs[i][j] += Math.min(arrs[i - 1][j], arrs[i][j - 1]);
+ * {@link Problem18}
  */
 
 public class Problem81 {
@@ -33,15 +34,23 @@ public class Problem81 {
     }
 
     private int getMinimal(int[][] arrs) {
-        int minimal = 0;
 
         //从(0, 0) --> (79, 79) 找到每个位置的最短路径
 
         //arrs[i][j] += Math.min(arrs[i - 1][j], arrs[i][j - 1]);
 
-        //遍历方式: a.按行遍历; b.按列遍历; c.按斜三角遍历
+        //遍历方式: a.按行遍历; b.按列遍历;
 
         //a.按行遍历
+        traverseByLine(arrs);
+
+        //b.按列遍历
+
+
+        return arrs[79][79];
+    }
+
+    private void traverseByLine(int[][] arrs) {
         for (int i = 1; i < 80; i++) {
             arrs[i][0] += arrs[i - 1][0];
             arrs[0][i] += arrs[0][i - 1];
@@ -54,20 +63,7 @@ public class Problem81 {
 
             }
         }
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 80; i++) {
-            for (int j = 0; j < 80; j++) {
-                sb.append(arrs[i][j] + " ");
-            }
-            sb.append("\n");
-        }
-
-        System.out.println(sb.toString());
-
-        return arrs[79][79];
     }
-
 
     private int[] getMax(int[] arr) {
         int[] max = new int[arr.length - 1];
