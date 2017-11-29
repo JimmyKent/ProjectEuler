@@ -80,7 +80,7 @@ public class Problem82 {
                     sum[k] = arr[k][j] + arr[k - 1][j];
                 }
 
-                int columnMinimal = sum[0] + arr[0][j - 1];//取第一个
+                int columnMinimal = sum[i] + arr[i][j - 1];//取第一个
 
                 //加回前面一列的值
                 for (int k = 0; k < 80; k++) {
