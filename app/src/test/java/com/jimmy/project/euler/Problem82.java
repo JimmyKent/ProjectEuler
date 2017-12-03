@@ -1,6 +1,5 @@
 package com.jimmy.project.euler;
 
-import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,32 +13,25 @@ import java.io.InputStreamReader;
  * 82的图论思路
  * <p>
  * http://blog.sina.com.cn/s/blog_8f84f3400102w1gn.html
+ * 260324
  */
 /*
 题意：给出一个80*80的矩阵，从最左栏任意一格出发，始终只向右、向上或向下移动，到最右栏任意一格结束的最小路径和。
-
         思路：81题的加强版
-
         因为以列为单位，方便起见，把81题中的行列调换一下
-
         f[j][i]表示从最左列起到第j列，第i行时的最小路径和
-
         则f[j][i] = min(f[j - 1][k]+sum[k,i])
-
         其中，sum[k,i]表示同一列中，从k行到i行的和，或者是从i行到k行的和（哪个数字大哪个在下面）
-
         三重循环后得到答案，再从f[80][i]中选一个最小的。这个方法不是效率最高的方法，但是是最容易理解的...
-
         这个思路是从其他位置到当前位置的算法;
         应该也有从当前位置触发,判断是去哪个位置的
         http://www.javashuo.com/content/p-4338566.html
         */
 public class Problem82 {
 
-    private static final String FILE_PATH = "/Users/jinguochong/AndroidStudioProjects/ProjectEuler/app/src/test/java/com/jimmy/project/euler/p81-82-83_matrix.txt";
+    private static final String FILE_PATH = "D:\\Android\\workspace\\MyApplication2\\app\\src\\main\\java\\com\\example\\administrator\\myapplication\\p81-82-83_matrix.txt";
 
-    @Test
-    public void main() {
+    public static void main(String[] args) {
         int[][] arrs = new int[80][80];
 
         readTxtFile(FILE_PATH, arrs);
@@ -51,7 +43,7 @@ public class Problem82 {
 
     }
 
-    private void cal(int[][] arr) {
+    private static void cal(int[][] arr) {
 
         //第二列和最后一列需要单独计算,不存在比较
 
@@ -59,7 +51,7 @@ public class Problem82 {
             arr[i][1] += arr[i][0];
         }
 
-        //一般性
+        //一般性 TODO 第三列第一个就错了
         for (int j = 2; j < arr.length - 1; j++) { //按列循环
 
             for (int i = 0; i < arr[0].length; i++) { //列中的每个位置,对应是行
@@ -68,23 +60,22 @@ public class Problem82 {
 
 
                 //要达到图中的效果,此处有图
-
                 int[] sum = new int[80];
                 for (int k = i - 1; k > -1; k--) {
-                    sum[k] = arr[k][j] + arr[k + 1][j];
+                    sum[k] = sum[k + 1] + arr[k][j];
                 }
-
-                sum[i] = arr[i][j];
 
                 for (int k = i + 1; k < 80; k++) {
-                    sum[k] = arr[k][j] + arr[k - 1][j];
+                    sum[k] = sum[k - 1] + arr[k][j];
                 }
 
-                int columnMinimal = sum[i] + arr[i][j - 1];//取第一个
-
                 //加回前面一列的值
-                for (int k = 0; k < 80; k++) {
+                for (int k = i; k < 80; k++) {
                     sum[k] += arr[k][j - 1];
+                }
+
+                int columnMinimal = arr[i][j - 1];//取第一个
+                for (int k = 0; k < 80; k++) {
                     if (sum[k] < columnMinimal) {
                         columnMinimal = sum[k];
                     }
@@ -96,11 +87,12 @@ public class Problem82 {
 
         }
 
-
+        //最后一列
         for (int i = 0; i < arr.length; i++) {
             arr[i][arr.length - 1] += arr[i][arr.length - 2];
         }
 
+        //找到最小的结果
         //这里就不和上一个for合并了,方便理解
         int minimal = arr[0][arr[0].length - 1];
         for (int i = 0; i < 80; i++) {
@@ -112,8 +104,8 @@ public class Problem82 {
         System.out.println(minimal);
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 80; i++){
-            for (int j = 0 ; j <80 ; j++){
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 80; j++) {
                 sb.append(arr[i][j]).append("  ");
             }
             sb.append("\n");
@@ -123,7 +115,7 @@ public class Problem82 {
     }
 
 
-    private void readTxtFile(String filePath, int[][] arrs) {
+    private static void readTxtFile(String filePath, int[][] arrs) {
 
         try {
             String encoding = "utf-8";
