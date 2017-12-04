@@ -51,7 +51,7 @@ public class Problem82 {
             arr[i][1] += arr[i][0];
         }
 
-        //一般性 TODO 第三列第一个就错了
+        //一般性
         for (int j = 2; j < arr.length - 1; j++) { //按列循环
 
             for (int i = 0; i < arr[0].length; i++) { //列中的每个位置,对应是行
@@ -103,7 +103,7 @@ public class Problem82 {
 
         System.out.println(minimal);
 
-        StringBuilder sb = new StringBuilder();
+        /*StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 80; i++) {
             for (int j = 0; j < 80; j++) {
                 sb.append(arr[i][j]).append("  ");
@@ -111,7 +111,7 @@ public class Problem82 {
             sb.append("\n");
         }
 
-        System.out.println(sb);
+        System.out.println(sb);*/
     }
 
 
