@@ -12,6 +12,11 @@ import java.util.PriorityQueue;
 
 /**
  * Created by jinguochong on 06/12/2017.
+ * 思路
+ * http://www.cnblogs.com/skywang12345/p/3711516.html
+ * PriorityQueue 最小堆 插入和删除都是O(log(n))的时间复杂度
+ * 但是你要是查找元素的话，最小堆没有良好的排序的性质，所以是O(n)的
+ *
  * 425185
  */
 
