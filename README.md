@@ -22,6 +22,7 @@
 	回溯法  
 	最短路径  [python实现](https://github.com/JimmyKent/PythonLearning/blob/master/com/jimmy/euler_project/Problem83.py) 含动画
 
+* linear_regression
 
 Problem21 友好数，要改造约数算法
 
