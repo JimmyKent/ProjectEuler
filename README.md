@@ -2,7 +2,9 @@
 因为是用Android Studio编程，所以代码放在test目录下
 
 
-
+* 串匹配
+    蛮力算法和KMP
+    ProjectEuler/app/src/test/java/strmatch/StringMatchTest.java
 
 * 自动计算数独  
 	ProjectEuler/app/src/test/java/sudoku  
