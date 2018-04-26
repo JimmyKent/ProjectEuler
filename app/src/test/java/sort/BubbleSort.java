@@ -9,7 +9,7 @@ import java.util.Arrays;
  * 起泡排序
  * <p>
  * 也是有优化版本的
- *
+ * <p>
  * 算法的稳定性(stability):重复元素在输入和输出的次序不变. 比如有7a,7b,7c ,经过排序后,7a,7b,7c的顺序是不变的
  * A B C 版本是稳定的
  */
@@ -19,11 +19,18 @@ public class BubbleSort {
     public void main() {
 
         int[] arrA = {2, 3, 2, 1};
-        bubbleSortA(arrA, 0, arrA.length);
+        bubbleSortA1(arrA, 0, arrA.length);
         System.out.println(Arrays.toString(arrA));
 
+        int[] arrA2 = {3, 2, 1};
+        int hi = arrA2.length;
+        while (hi > 0) {
+            bubbleSortA2(arrA2, 0, hi--);
+        }
+        System.out.println(Arrays.toString(arrA2));
+
         int[] arr = {3, 2, 1};
-        int hi = arr.length;
+        hi = arr.length;
         while (!bubbleSortB(arr, 0, hi--)) ;
 
         System.out.println(Arrays.toString(arr));
@@ -39,8 +46,7 @@ public class BubbleSort {
 
     //每两相邻元素比对
     //时间 三角形 O(n2)
-    private static void bubbleSortA(int[] arr, int lo, int hi) {
-
+    private static void bubbleSortA1(int[] arr, int lo, int hi) {
         for (int i = hi - 1; i > lo; i--) {
             for (int j = 0; j < i; j++) {
                 if (arr[j] > arr[j + 1]) {
@@ -50,7 +56,17 @@ public class BubbleSort {
                 }
             }
         }
+    }
 
+    private static void bubbleSortA2(int[] arr, int lo, int hi) {
+        while (++lo < hi) {// 自左向右, 逐一检查各对相邻元素
+            if (arr[lo - 1] > arr[lo]) {//若逆序
+                //swap交换
+                int temp = arr[lo - 1];
+                arr[lo - 1] = arr[lo];
+                arr[lo] = temp;
+            }
+        }
     }
 
     //如果后续整体有序,就不再起泡到第一个元素了

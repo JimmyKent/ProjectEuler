@@ -1,11 +1,13 @@
 基于比较的排序:
 下界是O(n log n)
 证明:《算法导论》第三版 第八章107页
-bubbleSort 起泡排序
-selectionSort 选择
-mergeSort 归并
-heapSort 堆排序
-quickSort 快速排序
+bubbleSort      起泡排序
+mergeSort       归并
+selectionSort   选择
+insertSort      插入排序
+heapSort        堆排序
+quickSort       快速排序
+shellSort       希尔排序
 ```
 /**
  * 基于二分查找的排序: 从头开始取每个数,然后根据二分查找返回的是不大于当前元素e的最后一个元素
