@@ -1,13 +1,22 @@
-基于比较的排序:
+### 基于比较的排序:
 下界是O(n log n)
 证明:《算法导论》第三版 第八章107页  
 bubbleSort      起泡排序  
-mergeSort       归并  
+mergeSort       归并(分治策略)  
 selectionSort   选择排序(如果是基于列表的,可以进行改进为堆排序)  
 insertSort      插入排序(基于列表)  
+### 基于散列的排序:  
+bucketSort			   桶排序  
+countingSort		   计数排序  
+radixSort			   基数排序  
+### 基于优先级队列
 heapSort        堆排序(改进的选择排序,在选最大(最小)值时,可以从O(n)的时间降低为O(log n))  
-quickSort       快速排序  
+tournamentSort  锦标赛排序
+### 高级的排序算法  
+quickSort       快速排序(分治策略,前一序列数值上, 不得超过后一序列任意元素的大小)  
 shellSort       希尔排序  
+
+
 
 ```
 /**
