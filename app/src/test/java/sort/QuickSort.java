@@ -122,7 +122,7 @@ public class QuickSort {
 
 
     //from wikipedia
-    public static void quickSort(int[] arr, int head, int tail) {
+    public static void quickSortWiki(int[] arr, int head, int tail) {
         if (head >= tail || arr == null || arr.length <= 1) {
             return;
         }
@@ -144,8 +144,8 @@ public class QuickSort {
                 ++i;
             }
         }
-        quickSort(arr, head, j);
-        quickSort(arr, i, tail);
+        quickSortWiki(arr, head, j);
+        quickSortWiki(arr, i, tail);
     }
 
 
