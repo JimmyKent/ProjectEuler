@@ -52,7 +52,7 @@ public class MergeSort {
         }
         //i - arr; j - arrB; k - arrC
         for (int i = 0, j = 0, k = 0; (j < lb || k < lc); ) {//arrB[j]和arrC[k]中小的转至arrA的末尾
-            if (j < lb && (lc <= k || arrB[j] <= arrC[k]))
+            if (j < lb && (lc <= k || arrB[j] <= arrC[k])) //j < lb arrB未越界, lc <= k  arrC已经越界, 哨兵节点模式,认为arrC尾部有个正无穷(+∞)的哨兵
                 arr[lo + i++] = arrB[j++];
             if (k < lc && (lb <= j || arrC[k] < arrB[j]))
                 arr[lo + i++] = arrC[k++];
